@@ -5,12 +5,13 @@ import { Archive, Check, Copy, Eye, Megaphone, Pause, Pencil, Play, Plus, Refres
 import type { SponsorCampaign } from "../lib/sponsor-types";
 import { allocateSponsorFunds } from "../lib/sponsor-core";
 import type { SponsorDraft, TokiSponsors } from "../hooks/use-toki-sponsors";
+import { SponsorSalesCard } from "./toki-sponsor-sales";
 import styles from "./toki-sponsors.module.css";
 
 const yen = (value: number) => new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 }).format(value);
 const date = (value: number | null) => value ? new Intl.DateTimeFormat("ja-JP", { month: "numeric", day: "numeric", timeZone: "Asia/Tokyo" }).format(value) : "未開始";
 const duration = (value: number) => value < 60 ? `${Math.floor(value)}秒` : `${Math.floor(value / 60)}分${Math.floor(value % 60)}秒`;
-const initialDraft: SponsorDraft = { company: "", title: "", description: "", url: "", amountYen: 30000, days: 30 };
+const initialDraft: SponsorDraft = { company: "", title: "", description: "", url: "", amountYen: 5000, days: 30 };
 const statusLabel = (campaign: SponsorCampaign) => campaign.status === "draft" ? "下書き" : campaign.status === "paused" ? "一時停止" : campaign.status === "archived" ? "アーカイブ" : campaign.isLive ? "掲載体験中" : "掲載期間終了";
 
 function Modal({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: ReactNode }) {
@@ -53,12 +54,12 @@ export function SponsorPanel({ sponsor }: { sponsor: TokiSponsors }) {
     catch (reason) { setFormError((reason as Error).message); }
   }
   async function copyProposal(campaign: SponsorCampaign) {
-    const text = `【協賛提案の下書き・未送信】\n${campaign.company} 御中\n\nTOKIの協賛掲載についてのご提案です。\n掲載タイトル：${campaign.title}\n紹介文：${campaign.description || "別途ご相談"}\n掲載先URL：${campaign.url}\n提案金額：${yen(campaign.amountYen)}\n掲載期間：${campaign.days}日間\n\n本サービスは現在検証段階です。掲載条件、料金、配信対象、実際の入金方法は別途協議・契約します。画面内の表示時間は技術的な計測値であり、人の注視・売上・成果を保証するものではありません。\n\n配分の計画例：経費控除後の50%を還元予算、20%を予備費、20%を運営費、10%を次の協賛募集の予算とします。\nこの文面のコピーによる契約・送信・決済は発生しません。`;
+    const text = `【協賛提案の下書き・未送信】\n${campaign.company} 御中\n\nTOKIの協賛掲載についてのご提案です。\n掲載タイトル：${campaign.title}\n紹介文：${campaign.description || "別途ご相談"}\n掲載先URL：${campaign.url}\n提案金額：${yen(campaign.amountYen)}\n掲載期間：${campaign.days}日間\n\n本サービスは現在、運営者本人だけが閲覧できる確認版です。利用者数・表示実績は未確認で、掲載先の公開、販売者情報、税区分、掲載・返金条件を整えてから購入受付を案内します。現在、決済リンクは発行していません。表示時間に応じたポイント獲得という閲覧の誘因があり、現在のポイントは換金できません。広告クリックや商品購入をポイント付与の条件にはしません。画面内の表示時間は技術的な計測値であり、人の注視・表示回数・クリック・申込み・売上を保証しません。\n\n配分の計画例：経費控除後の50%を還元予算、20%を予備費、20%を運営費、10%を次の協賛募集の予算とします。\nこの文面のコピーによる契約・送信・決済は発生しません。`;
     try { await navigator.clipboard.writeText(text); notify("提案文をコピーしました。送信はしていません。"); }
     catch { notify("コピーできませんでした。ブラウザのクリップボード設定を確認してください。"); }
   }
 
-  if (!sponsor.data) return <section className={styles.root}><div className={styles.empty}><Megaphone size={32} /><h2>協賛スタジオ</h2><p>{sponsor.error || "協賛データを読み込んでいます。"}</p>{sponsor.error && <button type="button" className={styles.primary} onClick={() => void sponsor.refresh()} disabled={sponsor.busy}><RefreshCw size={16} />再読み込み</button>}</div></section>;
+  if (!sponsor.data) return <section className={styles.root}><SponsorSalesCard /><div className={styles.empty}><Megaphone size={32} /><h2>協賛シミュレーション</h2><p>{sponsor.error || "協賛データを読み込んでいます。"}</p>{sponsor.error && <button type="button" className={styles.primary} onClick={() => void sponsor.refresh()} disabled={sponsor.busy}><RefreshCw size={16} />再読み込み</button>}</div></section>;
   const data = sponsor.data;
   const cards = [
     { label: "還元予算", ratio: 50, amount: data.totals.rewardYen, detail: "利用者のポイント原資へ", color: "#0e695d" },
@@ -71,8 +72,9 @@ export function SponsorPanel({ sponsor }: { sponsor: TokiSponsors }) {
   if (selected && Number.isSafeInteger(deductions) && deductions >= 0 && deductions <= 10_000_000) preview = allocateSponsorFunds(selected.amountYen, deductions);
 
   return <section className={styles.root}>
+    <SponsorSalesCard />
     <header className={styles.heading}><div><span className={styles.eyebrow}>SPONSOR STUDIO</span><h2>原資を育てる、協賛の仕組み。</h2><p>企業の紹介枠をつくり、協賛収入の配分を設計します。</p></div><span className={styles.source}>{sponsor.source === "local" ? "この端末だけの体験" : "データを保存中の体験環境"}</span></header>
-    <div className={styles.demoNotice}><ShieldCheck size={21} /><div><strong>すべてシミュレーションです</strong><p>実際の入金・契約・送金は発生しません。体験の配分額は換金できる残高に加算されません。</p></div></div>
+    <div className={styles.demoNotice}><ShieldCheck size={21} /><div><strong>ここから下は、入金・配分のシミュレーションです</strong><p>上の販売準備とは別のテスト用台帳です。実際の入金・契約・送金は発生せず、体験の配分額は換金できる残高に加算されません。</p></div></div>
     {sponsor.error && <div className={styles.error} role="alert">{sponsor.error}<button type="button" onClick={() => void sponsor.refresh()} disabled={sponsor.busy}>再読み込み</button></div>}
     <div className={styles.financialHeader}><div className={styles.realFunds}><Wallet size={23} /><span>実際の入金</span><strong>未接続</strong><small>このアプリで受領した現金は0円です。</small></div><div className={styles.simulatedFunds}><span>シミュレーションの配分対象額</span><strong>{yen(data.totals.netYen)}</strong><small>協賛設定額 {yen(data.totals.grossYen)} − 控除 {yen(data.totals.deductionsYen)}</small></div></div>
     <div className={styles.allocations}>{cards.map((card) => <article className={styles.allocationCard} key={card.label}><span className={styles.colorLine} style={{ background: card.color }} /><div><h3>{card.label}</h3><span>{card.ratio}%</span></div><strong>{yen(card.amount)}</strong><p>{card.detail}</p></article>)}</div>
