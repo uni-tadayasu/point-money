@@ -1,11 +1,14 @@
 "use client";
 
+import Link from "next/link";
+
 import { useCallback, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Archive, CheckCircle2, ChevronDown, Copy, FileText, Handshake, Info, Pencil, Plus, RefreshCw, Search, ShieldCheck, Target, Wallet, X } from "lucide-react";
 import { buildSponsorOfferText } from "../lib/sponsor-offer";
 import { calculateSponsorFundingPlan, FUNDING_ASSUMPTIONS, FUNDING_TARGET_YEN } from "../lib/sponsor-funding-plan";
 import type { SponsorProspect, SponsorProspectStage, SponsorProspectsSnapshot } from "../lib/sponsor-prospects-types";
 import styles from "./toki-sponsor-growth.module.css";
+import { TokiBgmControls } from "./toki-bgm-controls";
 
 const stages: { value: SponsorProspectStage; label: string }[] = [{ value: "candidate", label: "候補" }, { value: "preparing", label: "提案準備" }, { value: "contacted", label: "連絡済" }, { value: "negotiating", label: "商談" }, { value: "agreed", label: "合意" }, { value: "closed", label: "見送り" }];
 const yen = (value: number) => `¥${new Intl.NumberFormat("ja-JP").format(value)}`;
@@ -77,7 +80,7 @@ export function SponsorGrowthPage() {
   }
 
   return <div className={styles.page}>
-    <header className={styles.header}><a href="/" className={styles.brand}><img src="/favicon.svg" width="38" height="38" alt="" /><span>TOKI<small>SPONSOR GROWTH</small></span></a><nav><a href="/sponsor">掲載条件</a><a href="/">アプリに戻る</a></nav></header>
+    <header className={styles.header}><Link href="/" className={styles.brand}><img src="/favicon.svg" width="38" height="38" alt="" /><span>TOKI<small>SPONSOR GROWTH</small></span></Link><nav><TokiBgmControls /><Link href="/sponsor">掲載条件</Link><Link href="/">アプリに戻る</Link></nav></header>
     <main className={styles.main}>
       <section className={styles.hero}><div><span className={styles.eyebrow}>BUILD THE FUND, STEP BY STEP</span><h1>原資100万円へ向けた、<br />スポンサー計画。</h1><p>費用を見込み、提案先を整理し、<br />実際に提供できる枠から育てます。</p></div><div className={styles.target}><span><Target size={18} />還元原資の目標</span><strong>{yen(FUNDING_TARGET_YEN)}</strong><small>売上ではなく、還元へ充てる額の目標</small></div></section>
 
@@ -92,7 +95,7 @@ export function SponsorGrowthPage() {
         <p className={styles.sources}>料金条件の参考：<a href="https://stripe.com/jp/pricing" target="_blank" rel="noreferrer">Stripeの料金</a> · <a href="https://support.stripe.com/questions/understanding-stripe-tax-pricing?locale=ja-JP" target="_blank" rel="noreferrer">Stripe Taxの料金</a> · <a href="https://support.stripe.com/questions/taxes-on-stripe-fees-for-businesses-in-japan?locale=ja-JP" target="_blank" rel="noreferrer">日本の手数料にかかる税</a></p>
       </section>
 
-      <section className={styles.expansion}><div className={styles.sectionHeading}><div><span className={styles.sectionEyebrow}>START WITH ONE</span><h2>初回1枠から、段階的に増やす。</h2></div><Handshake size={27} /></div><div className={styles.expansionSteps}><article><h3>販売の準備を整える</h3><p>公開する掲載先、販売者窓口、掲載・返金の運用を確定します。現在、購入受付はまだ始めていません。</p></article><article><h3>最初の1枠を履行する</h3><p>掲載開始・終了、提供内容、受取額と費用を確認し、実際の掲載実績をつくります。</p></article><article><h3>提供可能な枠だけ増やす</h3><p>受け入れ可能な掲載枠と期間を決め、確認できた実績を使って次の提案を進めます。無制限の同時販売は行いません。</p></article></div></section>
+      <section className={styles.expansion}><div className={styles.sectionHeading}><div><span className={styles.sectionEyebrow}>START WITH ONE</span><h2>初回1枠から、段階的に増やす。</h2></div><Handshake size={27} /></div><div className={styles.expansionSteps}><article><h3>販売の準備を整える</h3><p>公開する掲載先、正式な販売者情報、掲載・返金の運用を確定します。連絡窓口は設定済みで、購入受付はまだ始めていません。</p></article><article><h3>最初の1枠を履行する</h3><p>掲載開始・終了、提供内容、受取額と費用を確認し、実際の掲載実績をつくります。</p></article><article><h3>提供可能な枠だけ増やす</h3><p>受け入れ可能な掲載枠と期間を決め、確認できた実績を使って次の提案を進めます。無制限の同時販売は行いません。</p></article></div></section>
 
       <section className={styles.panel} aria-labelledby="prospect-list-title"><div className={styles.sectionHeading}><div><span className={styles.sectionEyebrow}>YOUR SPONSOR PIPELINE</span><h2 id="prospect-list-title">営業候補を管理する</h2></div><button className={styles.primary} type="button" disabled={!data || busy || loading || data.prospects.length >= 5000} onClick={beginCreate}><Plus size={18} />候補を追加</button></div><p className={styles.intro}>実際に検討する企業を手動で登録します。保存や段階の変更は、連絡の送信・契約締結・入金確認を意味しません。</p>
         <div className={styles.pipelineSummary}><div><span>進行中の候補</span><strong>{data ? number(data.summary.activeCount) : "—"}<small>件</small></strong></div><div><span>候補の予定額合計</span><strong>{data ? yen(data.summary.estimatedAmountYen) : "—"}</strong></div><div className={styles.plannedNote}><Info size={19} /><p>予定額は売上でも原資でもありません。見送り・保管済みは合計から除きます。</p></div></div>
