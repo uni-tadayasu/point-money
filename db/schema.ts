@@ -1,4 +1,5 @@
 import { integer, sqliteTable, text, index, uniqueIndex } from "drizzle-orm/sqlite-core";
+export * from "./sponsor-prospects-schema";
 
 export * from "./sponsor-schema";
 

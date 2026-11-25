@@ -8,6 +8,9 @@
 
 /* Keep all offer conditions readable against their light surfaces. */
 .includedList>li,.disclosureList>li,.terms dd,.intakeList>li{color:#5e745f}.readinessRow p,.pendingPlacement p,.noPromise p,.refundNote p,.sellerNote,.sectionIntro,.reviewNotice p{color:#687c66}.sellerInfo dt,.overview>article>span{color:#6e816a}.readinessTitle>.pendingLabel{color:#777a4e}.pageFooter{color:#6e8167}
+.growthCard{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:13px 30px;align-items:center;border:1px solid #d7e4d0;border-radius:12px;padding:25px 29px;background:#eef5e9}.growthHeading{display:flex;align-items:center;gap:13px;min-width:0}.growthHeading>svg{color:#799c67}.growthHeading>div>span{font-size:10px;letter-spacing:.14em;color:#839b72;line-height:1.8}.growthHeading h2{font-size:20px;font-weight:550;line-height:1.7;color:#426b3e;letter-spacing:.01em}.growthCard>p{grid-column:1;font-size:14px;line-height:1.95;color:#697f5c}.growthCard>a{grid-column:2;grid-row:1/3;align-self:center;justify-self:end;display:flex;align-items:center;justify-content:center;min-height:44px;border:1px solid #bad0a8;background:#fff;border-radius:8px;padding:11px 16px;color:#648450;text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}.growthCard>a:hover{background:#f9fcf5}.growthCard>a:focus-visible{outline:3px solid #9abb7e;outline-offset:3px}
+@media(max-width:900px){.growthCard{grid-template-columns:1fr;padding:24px;gap:14px}.growthCard>a{grid-column:1;grid-row:auto;justify-self:stretch}.growthHeading h2{font-size:20px}.growthCard>p{font-size:14px}}
+@media(max-width:580px){.growthCard{padding:22px 20px;border-radius:11px;gap:12px}.growthHeading{gap:10px;align-items:flex-start}.growthHeading>svg{width:23px;height:23px;margin-top:8px}.growthHeading h2{font-size:18px;line-height:1.8}.growthHeading>div>span{font-size:9px}.growthCard>p{font-size:13px}.growthCard>a{font-size:14px;min-height:43px}}
 
 /* The price, tax treatment and contractual copy remain legible on small screens. */
 .cardLead,.cardAction>p,.heroIntro>p,.reviewNotice p,.includedList>li,.disclosureList>li,.terms dd,.sellerInfo dd,.intakeList>li,.reviewActions p{font-size:1rem}
@@ -15,3 +18,9 @@
 .pendingPlacement p,.noPromise p,.refundNote p,.sellerNote,.sectionIntro,.reviewNotice p,.readinessRow p{color:#52694f}
 .reviewNotice>svg,.pendingPlacement>svg,.noPromise>svg,.refundNote>svg,.includedList>li>svg,.readinessRow>svg{flex-shrink:0}
 .copyFallback{font-size:1rem}
+
+/* Funding-plan entry card uses the same readable sizing as the planning page. */
+.growthCard>p{font-size:16px;color:#52694f}
+.growthHeading>div>span{font-size:12px;color:#637c55}
+.growthCard>a{font-size:14px;color:#526f40}
+.growthHeading>svg{flex-shrink:0}
