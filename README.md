@@ -2,6 +2,8 @@
 
 **ひらく、たまる。** PC・スマートフォン・タブレットで使える、日本語のポイント体験アプリです。
 
+**初回スポンサーの事前相談を受け付けています。** 税込5,000円・30日間の掲載予定条件と、一般公開前の現状を [企業向け募集要項](docs/sponsor-invitation.md) にまとめています。お問い合わせは [hisashi0128.k@gmail.com](mailto:hisashi0128.k@gmail.com) へ。購入受付は準備中です。
+
 ## 公開版の位置づけ
 
 - アプリ: https://toki-rewards-kasai.hisa-0128-1996.chatgpt.site
