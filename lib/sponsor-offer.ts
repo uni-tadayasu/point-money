@@ -4,7 +4,8 @@
  * A checkout URL must remain absent until the outstanding sale conditions are resolved.
  */
 export const SPONSOR_OFFER = {
-  version: "toki-first-sponsor-2026-11-25",
+  offerId: "toki-first-sponsor-2026-11-25",
+  version: "toki-first-sponsor-tax-inclusive-2026-11-25",
   preparedAt: "2026-11-25",
   merchantName: "KASAI SOLUTIONS",
   name: "TOKI 初回スポンサー掲載枠",
@@ -13,7 +14,16 @@ export const SPONSOR_OFFER = {
   initialSlots: 1,
   paymentLinkUrl: null,
   status: "preparing",
-  taxStatus: "pending",
+  taxStatus: "collection_pending",
+  taxPolicy: "stripe_tax",
+  taxBehavior: "inclusive",
+  stripeCatalog: {
+    registered: true,
+    productId: "prod_Vh2qxT1ODf311I",
+    priceId: "price_1UfekkL3ZjL9QUmfD1vfKS2p",
+    productActive: false,
+    taxCode: "txcd_10701000",
+  },
   placementLabel: "TOKIホーム画面のスポンサー紹介欄",
   startWithinDays: 7,
   refundProcessWithinDays: 7,
@@ -28,6 +38,7 @@ export const SPONSOR_OFFER = {
     "TOKIはアプリの表示時間に応じてポイントが加算される仕組みです。利用者の閲覧にはポイント獲得という目的が含まれます。人による注視や、広告への関心を保証しません。",
     "広告のクリックや商品購入をポイント付与の条件にはしません。",
     "現在のアプリは運営者本人だけが閲覧できる確認版です。ポイントの現金・暗号資産への交換は未提供です。購入受付前に、実際に閲覧できる掲載先を案内します。",
+    "税込5,000円の商品・価格は本番Stripeに登録済みです。Stripe Taxで税額を計算する方針は確定していますが、徴収設定を最終確認中のため購入受付は開始していません。",
     "本ページは販売条件の確認用です。決済リンクはまだ発行しておらず、申込み・契約・支払いは発生しません。",
   ],
   draftTerms: {
@@ -40,8 +51,10 @@ export const SPONSOR_OFFER = {
   },
   readiness: [
     { key: "merchant", label: "受取先", ready: true, detail: "KASAI SOLUTIONSの本番Stripe口座を使用する方針が確定しています。" },
-    { key: "offer", label: "初回掲載枠", ready: true, detail: "5,000円・30日間・1回払いの内容を用意しました。開始・返金条件は確認用の案です。" },
-    { key: "tax", label: "消費税の扱い", ready: false, detail: "税の徴収方針を確認してから、Stripeの商品・価格を登録します。" },
+    { key: "offer", label: "初回掲載枠", ready: true, detail: "税込5,000円・30日間・1回払いです。開始・返金条件は確認用の案です。" },
+    { key: "catalog", label: "商品・価格の登録", ready: true, detail: "本番Stripeに商品と税込5,000円の価格を登録しました。商品の販売は保留しています。" },
+    { key: "tax_policy", label: "税額計算の方針", ready: true, detail: "Stripe Taxで税額を計算し、支払総額5,000円に含める方針が確定しています。" },
+    { key: "tax_collection", label: "消費税の徴収準備", ready: false, detail: "販売者の課税状況と国内の徴収設定を最終確認中です。購入画面での税額計算はまだ有効にしていません。" },
     { key: "placement", label: "掲載先の公開", ready: false, detail: "対象の利用者が閲覧できる掲載先と、購入した内容を表示する仕組みを整えます。" },
     { key: "contact", label: "販売者・連絡窓口", ready: false, detail: "販売者情報と、掲載・取消・返金の問い合わせ先を確定します。" },
     { key: "checkout", label: "購入受付", ready: false, detail: "購入条件と入金確認・掲載・返金の手順を整えた後、決済リンクを発行します。" },
@@ -63,8 +76,10 @@ export function buildSponsorOfferText(): string {
     "【販売条件の確認用・未送信・決済受付前】",
     `${offer.name}｜${offer.merchantName}`,
     "",
-    `予定の支払総額：${offer.amountYen.toLocaleString("ja-JP")}円（消費税の扱いは確認中）`,
+    `支払総額：税込${offer.amountYen.toLocaleString("ja-JP")}円`,
     `掲載期間：実際の掲載開始から${offer.days}日間／1回払い・自動更新なし`,
+    "税額計算：Stripe Taxを使用する方針は確定。実際の徴収設定は最終確認中です。",
+    "本番Stripeの商品・価格は登録済みです。商品の販売は保留中で、決済リンクはまだ発行していません。",
     `初回の販売予定数：${offer.initialSlots}枠`,
     `掲載場所：${offer.placementLabel}（現在は本人限定公開。購入受付前に掲載先を確定）`,
     "",
@@ -77,7 +92,7 @@ export function buildSponsorOfferText(): string {
     "開始・取消・返金条件の案",
     ...Object.values(offer.draftTerms).map((line) => `・${line}`),
     "",
-    "販売者情報・問い合わせ窓口・税区分を確定後、最終の購入条件を提示します。",
+    "販売者情報・問い合わせ窓口・徴収設定の最終確認後、最終の購入条件を提示します。",
     "この文面のコピーでは送信・契約・請求・決済は行われません。",
   ].join("\n");
 }

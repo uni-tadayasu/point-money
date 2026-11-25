@@ -54,7 +54,7 @@ export function SponsorPanel({ sponsor }: { sponsor: TokiSponsors }) {
     catch (reason) { setFormError((reason as Error).message); }
   }
   async function copyProposal(campaign: SponsorCampaign) {
-    const text = `【協賛提案の下書き・未送信】\n${campaign.company} 御中\n\nTOKIの協賛掲載についてのご提案です。\n掲載タイトル：${campaign.title}\n紹介文：${campaign.description || "別途ご相談"}\n掲載先URL：${campaign.url}\n提案金額：${yen(campaign.amountYen)}\n掲載期間：${campaign.days}日間\n\n本サービスは現在、運営者本人だけが閲覧できる確認版です。利用者数・表示実績は未確認で、掲載先の公開、販売者情報、税区分、掲載・返金条件を整えてから購入受付を案内します。現在、決済リンクは発行していません。表示時間に応じたポイント獲得という閲覧の誘因があり、現在のポイントは換金できません。広告クリックや商品購入をポイント付与の条件にはしません。画面内の表示時間は技術的な計測値であり、人の注視・表示回数・クリック・申込み・売上を保証しません。\n\n配分の計画例：経費控除後の50%を還元予算、20%を予備費、20%を運営費、10%を次の協賛募集の予算とします。\nこの文面のコピーによる契約・送信・決済は発生しません。`;
+    const text = `【協賛提案の下書き・未送信】\n${campaign.company} 御中\n\nTOKIの協賛掲載についてのご提案です。\n掲載タイトル：${campaign.title}\n紹介文：${campaign.description || "別途ご相談"}\n掲載先URL：${campaign.url}\n提案金額：${yen(campaign.amountYen)}\n掲載期間：${campaign.days}日間\n\n本サービスは現在、運営者本人だけが閲覧できる確認版です。利用者数・表示実績は未確認で、掲載先の公開、販売者情報、徴収設定の最終確認、掲載・返金条件を整えてから購入受付を案内します。Stripe Taxで税額を計算する方針は確定していますが、実際の徴収設定は最終確認中です。現在、決済リンクは発行していません。表示時間に応じたポイント獲得という閲覧の誘因があり、現在のポイントは換金できません。広告クリックや商品購入をポイント付与の条件にはしません。画面内の表示時間は技術的な計測値であり、人の注視・表示回数・クリック・申込み・売上を保証しません。\n\n配分の計画例：経費控除後の50%を還元予算、20%を予備費、20%を運営費、10%を次の協賛募集の予算とします。\nこの文面のコピーによる契約・送信・決済は発生しません。`;
     try { await navigator.clipboard.writeText(text); notify("提案文をコピーしました。送信はしていません。"); }
     catch { notify("コピーできませんでした。ブラウザのクリップボード設定を確認してください。"); }
   }

@@ -40,12 +40,12 @@ export function SponsorSalesCard() {
       <h2>{offer.name}</h2>
       <p className={styles.cardLead}>最初の協賛枠を、具体的な提案に。</p>
       <div className={styles.cardPrice}><strong>¥{price}</strong><span>{offer.days}日間 · 1回払い</span></div>
-      <p className={styles.taxNote}>予定の支払総額 · 消費税の扱いは確認中</p>
+      <p className={styles.taxNote}>税込 · Stripe Taxでの徴収設定を最終確認中</p>
       <div className={styles.cardFacts}><span><PanelTop size={16} />初回 {offer.initialSlots} 枠を予定</span><span>受取先 {offer.merchantName}</span></div>
     </div>
     <div className={styles.cardAction}>
       <span className={styles.statusPill}><LockKeyhole size={15} />販売準備中・決済リンク未発行</span>
-      <p>掲載先・販売者情報・税区分などを整えてから購入受付を開始します。現在、支払いは発生しません。</p>
+      <p>商品・価格は本番Stripeに登録済みです。徴収設定・掲載先・販売者情報などを整えてから購入受付を開始します。現在は購入できません。</p>
       <a href="/sponsor" className={styles.detailsLink}>掲載条件と準備状況を見る</a>
       <CopyOffer light />
     </div>
@@ -58,10 +58,10 @@ export function SponsorSalesDetail() {
     <main className={styles.pageMain}>
       <section className={styles.offerHero}>
         <div className={styles.heroIntro}><span className={styles.eyebrow}>THE FIRST PARTNER</span><h1>{offer.name}</h1><p>あなたのサービスを、<br />TOKIの最初の協賛枠へ。</p><div className={styles.heroBadges}><span>販売条件の確認用</span><span>まだ購入できません</span></div></div>
-        <div className={styles.heroPrice}><span>予定の支払総額</span><strong>¥{price}</strong><p>{offer.days}日間 · 1回払い · 自動更新なし</p><small>消費税の扱いは確認中</small><div><LockKeyhole size={16} />決済リンク未発行</div></div>
+        <div className={styles.heroPrice}><span>掲載料金（税込）</span><strong>¥{price}</strong><p>{offer.days}日間 · 1回払い · 自動更新なし</p><small>Stripe Taxで計算する方針 · 徴収設定は最終確認中</small><div><LockKeyhole size={16} />決済リンク未発行</div></div>
       </section>
 
-      <div className={styles.reviewNotice}><FileText size={23} /><div><strong>このページは、販売前の確認用です。</strong><p>料金・掲載内容を整理した下書きです。開始・取消・返金の条件は案であり、申込み・契約・支払いを受け付けるページではありません。</p></div></div>
+      <div className={styles.reviewNotice}><FileText size={23} /><div><strong>商品・価格は登録済み、購入受付は準備中です。</strong><p>税込5,000円の商品・価格を本番Stripeに登録しました。税額計算にはStripe Taxを使う方針ですが、実際の徴収設定は最終確認中です。開始・取消・返金の条件は案であり、現在は申込み・契約・支払いを受け付けていません。</p></div></div>
 
       <section className={styles.overview} aria-label="掲載枠の概要"><article><PanelTop size={24} /><span>掲載場所</span><strong>{offer.placementLabel}</strong></article><article><CalendarDays size={24} /><span>掲載期間</span><strong>実際の開始から{offer.days}日間</strong></article><article><Handshake size={24} /><span>初回の販売予定</span><strong>{offer.initialSlots}枠・単発の掲載</strong></article></section>
 
